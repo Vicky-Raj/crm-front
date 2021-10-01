@@ -2,13 +2,20 @@ import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import axios from "axios";
+import url from "./url";
 
 function AddManager(){
     const [managerName,setManagerName]=useState("");
     const [managerEmail,setManagerEmail]=useState("");
     let managerSave = (e) => {
-        e.preventDefault();
-        let resObj = {"name":managerName, "email":managerEmail}
+        console.log(managerName,managerEmail);
+        axios.post(url+"/manager",{name:managerName,email:managerEmail})
+        .then((res)=>{
+            console.log(res.data);
+            setManagerName("");
+            setManagerEmail("");
+        })
     }
     return(
     <>

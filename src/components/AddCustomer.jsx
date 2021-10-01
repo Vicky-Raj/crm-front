@@ -1,17 +1,36 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
+import axios from "axios";
+import url from "./url";
 
 function AddCustomer(){
     const [customerName,setCustomerName]=useState("");
     const [customerEmail,setCustomerEmail] = useState("");
     const [mappedManager,setMappedManager] = useState("");
+    const [managers,setManagers] = useState([]);
     let customerSave = (e) => {
-        e.preventDefault();
-        let resObj = {"name":customerName, "email":customerEmail,"manager":mappedManager}
+        console.log(mappedManager);
+        axios.post(url+"/customer",{name:customerName,email:customerEmail,manager:mappedManager})
+        .then((res)=>{
+            console.log(res.data);
+            setCustomerName("");
+            setCustomerEmail("");
+            setMappedManager("");
+        })
     }
+
+    useEffect(()=>{
+        axios.get(url+"/manager").then((res)=>{
+            setManagers(res.data);
+        })
+    },[])
+
+    useEffect(()=>{
+        setMappedManager(managers.length ? managers[0].name : "");
+    },[managers])
     return(
     <>
     <Modal.Dialog>
@@ -41,15 +60,10 @@ function AddCustomer(){
                 </Form.Group>
                 <Form.Group as={Col} controlId="formGridState">
                     <Form.Label>Mapping Manager</Form.Label>
-                        <Form.Select onChange={(e) => setMappedManager(e.target.value)} >
-                            <option>Manager 1</option>
-                            <option>Manager 1</option>
-                            {/* {
-                customers && customers.length > 0 && customers.map((item) => {
-    
-                     return <option value={item.name}>{item.name}</option>
-                })
-            } */}
+                        <Form.Select onChange={(e) => setMappedManager(e.target.value)} value={mappedManager}>
+                            {
+                                managers.map((manager)=><option key={manager.name} value={manager.name}>{manager.name}</option>)
+                            }
                         </Form.Select>
                     </Form.Group>
             </Form>
