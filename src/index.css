@@ -5,9 +5,29 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  width:100%;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.tab{
+  overflow: hidden;
+}
+
+.tabs .nav-item{
+  /* padding: 1rem; */
+   width:23.7%;
+}
+.tabs .nav-item button{
+  width: 100%;
+}
+.tab-content .tab{
+  width: 100%;
+}
+
+.review form{
+  width:100%;
 }
